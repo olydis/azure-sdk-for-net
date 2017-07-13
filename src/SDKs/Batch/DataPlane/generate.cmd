@@ -2,21 +2,23 @@
 :: Microsoft Azure SDK for Net - Generate library code
 :: Copyright (C) Microsoft Corporation. All Rights Reserved.
 ::
-setlocal
+
 @echo off
-set autoRestVersion=1.0.0-Nightly20170209
+setlocal
 
-if  "%1" == "" (
-    set specFile="https://raw.githubusercontent.com/Azure/azure-rest-api-specs/19f63015ea5a8a0fc64b9d7e2cdfeac447d93eaf/batch/2017-05-01.5.0/swagger/BatchService.json"
-) else (
-    set specFile="%1"
-)
+if not "%1" == "" (set specsRepoUser="%1")
+if not "%2" == "" (set specsRepoBranch="%2")
+if "%specsRepoUser%" == ""   (set specsRepoUser="Azure")
+if "%specsRepoBranch%" == "" (set specsRepoBranch="current")
+set specFile="https://github.com/%specsRepoUser%/azure-rest-api-specs/blob/%specsRepoBranch%/specification/batch/data-plane/readme.md"
 
-set repoRoot=%~dp0..\..\..\..
-set generateFolder=%~dp0Azure.Batch\GeneratedProtocol
+set autoRestVersion=1.2.0
+set sdksRoot=%~dp0..\..
 
-if exist %generateFolder% rd /S /Q  %generateFolder%
+if "%3" == "" (call npm i -g autorest)
+rd /S /Q %~dp0GeneratedProtocol
 
-call "%repoRoot%\tools\autorest.gen.cmd" %specFile% Microsoft.Azure.Batch.Protocol %autoRestVersion% %generateFolder% MICROSOFT_MIT_NO_VERSION "-ft 1 -disablesimplifier"
+@echo on
+call autorest %specFile% --csharp --csharp-sdks-folder=%sdksRoot% --version=%autoRestVersion%
 
 endlocal
