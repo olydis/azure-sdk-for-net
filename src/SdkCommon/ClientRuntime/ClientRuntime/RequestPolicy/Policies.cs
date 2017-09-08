@@ -13,7 +13,7 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
         void Log(string message);
     }
 
-    public class LoggingPolicyFactory : IFactory
+    public sealed class LoggingPolicyFactory : IFactory
     {
         ILogger logger;
 
@@ -27,7 +27,7 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
             return new LoggingPolicy(node, logger);
         }
 
-        private class LoggingPolicy : IPolicy
+        private sealed class LoggingPolicy : IPolicy
         {
             PolicyNode node;
             ILogger logger;
@@ -54,7 +54,7 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
         }
     }
 
-    public class TransientFailureRetryPolicyFactory : IFactory
+    public sealed class TransientFailureRetryPolicyFactory : IFactory
     {
         TimeSpan delay;
         TimeSpan maxDelay;
@@ -72,7 +72,7 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
             return new TransientFailure(node, delay, maxDelay, maxAttempts);
         }
 
-        private class TransientFailure : IPolicy
+        private sealed class TransientFailure : IPolicy
         {
             PolicyNode node;
             TimeSpan delay;
@@ -143,7 +143,7 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
         }
     }
 
-    public class ClientTimeLimitPolicyFactory : IFactory
+    public sealed class ClientTimeLimitPolicyFactory : IFactory
     {
         TimeSpan retry;
         TimeSpan overall;
@@ -159,7 +159,7 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
             return new ClientTimeLimitPolicy(node, retry, overall);
         }
 
-        private class ClientTimeLimitPolicy : IPolicy
+        private sealed class ClientTimeLimitPolicy : IPolicy
         {
             PolicyNode node;
             TimeSpan retry;

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Rest.ClientRuntime.RequestPolicy
 {
-    public sealed class Context
+    public class Context
     {
         public CancellationToken CancellationToken { get; private set; }
 
@@ -111,7 +111,7 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
             return node.Next; // Return head of the Policy object linked-list
         }
 
-        private class LastPolicy : IPolicy
+        private sealed class LastPolicy : IPolicy
         {
             public PolicyNode Node { get; private set; }
             public IHttpSender Sender { get; private set; }
