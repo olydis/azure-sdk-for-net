@@ -22,7 +22,7 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
     // to inject faults or to used a custom-configured http.Client object.
     public interface IHttpSender
     {
-        Task<HttpResponseMessage> SendAsync(HttpRequestMessage request);
+        Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken);
     }
 
     public class HttpClientSender : IHttpSender
@@ -33,7 +33,8 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
 
         public HttpClientSender(HttpClient client) => this.client = client;
 
-        public Task<HttpResponseMessage> SendAsync(HttpRequestMessage request) => client.SendAsync(request);
+        public Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            => client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
     }
 
     // The Pipeline interface represents an ordered list of Factory objects and an object implementing the HTTPSender interface.
@@ -132,7 +133,7 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
 
                 // request.Request = request.WithContext(ctx)
 
-                return await Sender.SendAsync(request);
+                return await Sender.SendAsync(request, ctx.CancellationToken);
             }
         }
     }

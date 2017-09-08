@@ -136,7 +136,7 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
                     {
                         delay = this.maxDelay;
                     }
-                    await Task.Delay(delay);
+                    await Task.Delay(delay, ctx.CancellationToken);
                 }
                 return response;
             }
