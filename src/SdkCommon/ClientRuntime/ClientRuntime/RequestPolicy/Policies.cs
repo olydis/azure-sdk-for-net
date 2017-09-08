@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Microsoft.Rest.ClientRuntime.RequestPolicy
@@ -184,10 +185,8 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
                 {
                     throw new Exception("overall operation time expired");
                 }
-                
-                // ctx, cancel:= context.WithTimeout(ctx, p.retry)
 
-                var response = await node.SendAsync(ctx, request);
+                var response = await node.SendAsync(ctx.WithCancellationToken(new CancellationTokenSource(retry).Token), request);
 
                 // TODO: cancel()
                 // TODO: retry should happen if retry expired but overall did not

@@ -15,6 +15,9 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
         public Context() : this(CancellationToken.None) { }
 
         public Context(CancellationToken cancellationToken) => CancellationToken = cancellationToken;
+
+        public Context WithCancellationToken(CancellationToken token)
+            => new Context(CancellationTokenSource.CreateLinkedTokenSource(CancellationToken, token).Token);
     }
 
     // The HTTPSender interface represents an object that know how to send an HTTP request over the wire (returning an HTTP response).
