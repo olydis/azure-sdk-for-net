@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,9 +21,7 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
         }
 
         public IPolicy Create(PolicyNode node)
-        {
-            return new LoggingPolicy(node, logger);
-        }
+            => new LoggingPolicy(node, logger);
 
         private sealed class LoggingPolicy : IPolicy
         {
@@ -69,9 +64,7 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
         }
 
         public IPolicy Create(PolicyNode node)
-        {
-            return new TransientFailure(node, delay, maxDelay, maxAttempts);
-        }
+            => new TransientFailure(node, delay, maxDelay, maxAttempts);
 
         private sealed class TransientFailure : IPolicy
         {
@@ -156,9 +149,7 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
         }
 
         public IPolicy Create(PolicyNode node)
-        {
-            return new ClientTimeLimitPolicy(node, retry, overall);
-        }
+            => new ClientTimeLimitPolicy(node, retry, overall);
 
         private sealed class ClientTimeLimitPolicy : IPolicy
         {

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,7 +31,8 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
 
         public HttpClientSender() : this(new HttpClient()) { }
 
-        public HttpClientSender(HttpClient client) => this.client = client;
+        public HttpClientSender(HttpClient client)
+            => this.client = client;
 
         public Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
             => client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
