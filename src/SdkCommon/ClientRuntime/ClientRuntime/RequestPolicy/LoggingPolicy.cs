@@ -4,8 +4,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Rest.ClientRuntime.RequestPolicy
 {
-    // TODO Potential generalization: Anything that can do something before and after SendAsync?
-    public static class LogPolicy
+    public static class LoggingPolicy
     {
         public static IRequestPolicy Create(IRequestPolicy next)
             => new Policy(next ?? throw new ArgumentNullException(nameof(next)));
