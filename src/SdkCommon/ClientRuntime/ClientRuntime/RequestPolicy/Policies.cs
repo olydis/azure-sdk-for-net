@@ -170,9 +170,9 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
             {
                 if (!operationStartTime.HasValue)
                 {
-                    operationStartTime = DateTime.Now;
+                    operationStartTime = DateTime.UtcNow;
                 }
-                if (DateTime.Now - operationStartTime > overall)
+                if (DateTime.UtcNow - operationStartTime > overall)
                 {
                     throw new Exception("overall operation time expired");
                 }

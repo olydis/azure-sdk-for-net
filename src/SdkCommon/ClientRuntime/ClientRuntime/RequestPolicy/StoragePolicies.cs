@@ -54,7 +54,7 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
 
             public async Task<HttpResponseMessage> SendAsync(Context ctx, HttpRequestMessage request)
             {
-                var operationEndTime = DateTime.Now + o.MaxOperationTime;
+                var operationEndTime = DateTime.UtcNow + o.MaxOperationTime;
 
                 Exception err = null;
 
@@ -68,7 +68,7 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
                 //    For a primary wait ((2 ^ (attempt / 2) - 1) * delay * random(0.8, 1.2)
                 //    If secondary gets a 404, don't fail, retry but future retries are only against the primary
                 //    When retrying against a secondary, ignore the retry count and wait (.1 second * random(0.8, 1.2))
-                for (int attempt = 0; (attempt < o.MaxAttempts) && DateTime.Now < operationEndTime; attempt++)
+                for (int attempt = 0; (attempt < o.MaxAttempts) && DateTime.UtcNow < operationEndTime; attempt++)
                 {
                     // Determine which endpoint to try. It's primary if there is no secondary or if it is an even attempt.
                     var tryingPrimary = !considerSecondary || (attempt % 2 == 0);
