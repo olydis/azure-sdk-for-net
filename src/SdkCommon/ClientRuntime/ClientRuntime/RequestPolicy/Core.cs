@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -50,14 +51,14 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
     // Since Pipeline and Factory objects are immutable, you typically create 1 Pipeline object and reuse it to make many HTTP requests.
     public class Pipeline
     {
-        public IFactory[] Factories { get; private set; }
+        public IEnumerable<IFactory> Factories { get; private set; }
         public IHttpSender Sender { get; private set; }
 
-        public Pipeline(IFactory[] factories) : this(factories, new HttpClientSender()) { }
+        public Pipeline(IEnumerable<IFactory> factories) : this(factories, new HttpClientSender()) { }
 
         // NewPipeline creates a new immutable Pipeline object from the slice of Factory objects and the specified HTTPSender.
         // If sender is nil, then a default (zero-value) http.Client is created for this Pipeline object.
-        public Pipeline(IFactory[] factories, IHttpSender sender)
+        public Pipeline(IEnumerable<IFactory> factories, IHttpSender sender)
         {
             this.Factories = factories;
             this.Sender = sender;

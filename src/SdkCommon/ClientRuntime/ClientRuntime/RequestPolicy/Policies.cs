@@ -81,16 +81,6 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
                 this.maxAttempts = maxAttempts;
             }
 
-            private static long pow(long number, int exponent)
-            {
-                long result = 1;
-                for (int n = 0; n < exponent; n++)
-                {
-                    result *= number;
-                }
-                return result;
-            }
-
             public async Task<HttpResponseMessage> SendAsync(Context ctx, HttpRequestMessage request)
             {
                 HttpResponseMessage response = null;
@@ -124,7 +114,7 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
                     // If we get here, delay & then retry
                     // TODO: really close the body here?
                     //response.Response().Body.Close()
-                    var delay = TimeSpan.FromTicks(this.delay.Ticks * ((pow(2, attempts) - 1) / 2));
+                    var delay = TimeSpan.FromTicks(this.delay.Ticks * ((Pow(2, attempts) - 1) / 2));
 
                     if (delay > this.maxDelay)
                     {
@@ -133,6 +123,16 @@ namespace Microsoft.Rest.ClientRuntime.RequestPolicy
                     await Task.Delay(delay, ctx.CancellationToken);
                 }
                 return response;
+            }
+
+            private static long Pow(long number, int exponent)
+            {
+                long result = 1;
+                for (int n = 0; n < exponent; n++)
+                {
+                    result *= number;
+                }
+                return result;
             }
         }
     }
