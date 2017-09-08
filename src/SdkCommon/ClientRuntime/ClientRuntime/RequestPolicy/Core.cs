@@ -3,10 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Microsoft.Rest.ClientRuntime.RequestPolicy
 {
+    public sealed class Context
+    {
+        public CancellationToken CancellationToken { get; private set; }
+
+        public Context() : this(CancellationToken.None) { }
+
+        public Context(CancellationToken cancellationToken) => CancellationToken = cancellationToken;
+    }
+
     // The HTTPSender interface represents an object that know how to send an HTTP request over the wire (returning an HTTP response).
     // Go's standard http.Client object satisfies this interface. But you can define your own type that implements this interface
     // to inject faults or to used a custom-configured http.Client object.
