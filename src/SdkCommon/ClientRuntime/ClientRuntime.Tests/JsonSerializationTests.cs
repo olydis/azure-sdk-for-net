@@ -148,6 +148,26 @@ namespace Microsoft.Rest.ClientRuntime.Tests
         }
 
         [Fact]
+        public void AnonymousObjectIsSerialized()
+        {
+            var serializeSettings = new JsonSerializerSettings();
+            serializeSettings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+            serializeSettings.ContractResolver = new ReadOnlyJsonContractResolver();
+
+            var alienJson = JsonConvert.SerializeObject(new Alien() { Body = new { Width = 123, Height = "4in" } }, Formatting.Indented, serializeSettings);
+            var alien = JsonConvert.DeserializeObject<Alien>(alienJson, serializeSettings);
+            Assert.Equal((int)alien.Body["Width"], 123);
+            Assert.Equal((string)alien.Body["Height"], "4in");
+
+            var anonJson = JsonConvert.SerializeObject(new { Width = 123, Height = "4in", Nested = new { Foo = true, Bar = false } }, Formatting.Indented, serializeSettings);
+            dynamic anon = JsonConvert.DeserializeObject<object>(anonJson, serializeSettings);
+            Assert.Equal((int)anon["Width"], 123);
+            Assert.Equal((string)anon["Height"], "4in");
+            Assert.Equal((bool)anon["Nested"]["Foo"], true);
+            Assert.Equal((bool)anon["Nested"]["Bar"], false);
+        }
+
+        [Fact]
         public void ReadOnlyPropertiesWorkStandalone()
         {
             var serializeSettings = new JsonSerializerSettings();
